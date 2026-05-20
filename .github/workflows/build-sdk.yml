@@ -1,0 +1,39 @@
+name: Build SDK
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  sdk:
+    name: SDK ${{ matrix.sdk_arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - sdk_arch: amd64
+            runner: ubuntu-24.04
+          - sdk_arch: arm64
+            runner: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Buildroot dependencies
+        run: sudo ./scripts/install-buildroot-deps.sh
+
+      - name: Build SDK
+        run: SDK_ARCH=${{ matrix.sdk_arch }} ./scripts/build-sdk.sh
+
+      - name: Upload SDK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlp1-sdk-linux-${{ matrix.sdk_arch }}
+          path: |
+            dist/mlp1-sdk-linux-${{ matrix.sdk_arch }}.tar.gz
+            dist/mlp1-sdk-linux-${{ matrix.sdk_arch }}.txt
+          if-no-files-found: error
+          retention-days: 14
+
