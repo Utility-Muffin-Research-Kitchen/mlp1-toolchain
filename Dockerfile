@@ -3,7 +3,9 @@ FROM docker.io/library/ubuntu:24.04
 ARG TARGETARCH
 ARG SDK_DIR=dist
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+COPY scripts/apt-install-retry.sh /usr/local/bin/apt-install-retry.sh
+
+RUN bash /usr/local/bin/apt-install-retry.sh \
     bash \
     ca-certificates \
     cmake \
@@ -16,8 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rsync \
     unzip \
     vim \
-    xz-utils \
-    && rm -rf /var/lib/apt/lists/*
+    xz-utils
 
 ENV TOOLCHAIN_DIR=/opt/mlp1-toolchain
 COPY ${SDK_DIR}/mlp1-sdk-linux-${TARGETARCH}.tar.gz /tmp/mlp1-sdk.tar.gz
@@ -58,4 +59,3 @@ RUN mkdir -p "${PREFIX_LOCAL}/include" "${PREFIX_LOCAL}/lib"
 
 VOLUME /root/workspace
 WORKDIR /root/workspace
-

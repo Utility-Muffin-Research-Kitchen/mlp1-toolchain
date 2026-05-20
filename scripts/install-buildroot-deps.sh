@@ -3,8 +3,9 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get update
-apt-get install -y --no-install-recommends \
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+bash "$SCRIPT_DIR/apt-install-retry.sh" \
     bc \
     bison \
     build-essential \
@@ -24,6 +25,3 @@ apt-get install -y --no-install-recommends \
     unzip \
     wget \
     xz-utils
-
-rm -rf /var/lib/apt/lists/*
-
