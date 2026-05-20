@@ -72,12 +72,12 @@ needed="$(docker run --rm \
     -v "$ROOT_DIR":/workspace \
     -w /workspace \
     "$IMAGE_NAME" \
-    bash -lc "aarch64-buildroot-linux-gnu-readelf -d '$BINARY_REL' | awk '/Shared library/ {gsub(/[\\[\\]]/, \"\", \\\$NF); print \\\$NF}'")"
+    bash -lc "aarch64-buildroot-linux-gnu-readelf -d '$BINARY_REL' | awk '/Shared library/ {gsub(/[\\[\\]]/, \"\", \$NF); print \$NF}'")"
 
 echo "Checking NEEDED libraries on device..."
 while IFS= read -r lib; do
     [ -n "$lib" ] || continue
-    "${ADB[@]}" shell "test -e '/lib/$lib' -o -e '/usr/lib/$lib' -o -n \"\$(find /lib /usr/lib -maxdepth 2 -name '$lib' 2>/dev/null | head -n 1)\"" >/dev/null || {
+    "${ADB[@]}" shell "test -e '/lib/$lib' -o -e '/usr/lib/$lib' -o -n \"\$(find /lib /usr/lib -maxdepth 2 -name '$lib' 2>/dev/null | head -n 1)\"" </dev/null >/dev/null || {
         echo "Missing device library: $lib" >&2
         exit 1
     }
