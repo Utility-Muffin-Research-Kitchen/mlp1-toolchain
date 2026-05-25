@@ -1,0 +1,7 @@
+.DS_Store
+.git
+.cache
+.build
+build
+workspace
+examples/smoke/build

@@ -58,6 +58,20 @@ Build the SDK tarball for the current Docker host architecture:
 make sdk
 ```
 
+Local SDK builds default to a persistent Docker volume workspace so Buildroot
+does not build its large tree on a macOS shared mount. To force the old
+host-bind workspace mode:
+
+```sh
+SDK_DOCKER_WORKDIR=bind make sdk
+```
+
+Remove the persistent SDK workspace volume:
+
+```sh
+make clean-sdk-volume
+```
+
 Build the local container image:
 
 ```sh
@@ -104,4 +118,3 @@ The ADB wrapper checks:
   SDK artifacts.
 - `.github/workflows/docker-build.yml` builds SDK artifacts, then publishes
   a multi-platform GHCR image from those artifacts.
-
