@@ -9,15 +9,18 @@ RUN bash /usr/local/bin/apt-install-retry.sh \
     bash \
     ca-certificates \
     cmake \
+    curl \
     file \
     git \
     make \
     ninja-build \
+    patch \
     pkg-config \
     python3 \
     rsync \
     unzip \
     vim \
+    wget \
     xz-utils
 
 ENV TOOLCHAIN_DIR=/opt/mlp1-toolchain
