@@ -50,6 +50,20 @@ Published image:
 docker pull ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain:latest
 ```
 
+Local UMRK workspace builds and Leaf staging use:
+
+```text
+ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain:local
+```
+
+Build it before MLP1 product builds, staging, or release ZIP generation:
+
+```sh
+make image
+# or from Leaf:
+make -C ../mlp1-toolchain image
+```
+
 ## Local Commands
 
 Build the SDK tarball for the current Docker host architecture:
