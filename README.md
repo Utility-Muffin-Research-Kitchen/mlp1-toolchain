@@ -6,8 +6,8 @@ The published image is intentionally public and blob-free. It builds an
 aarch64/Cortex-A55 SDK from Buildroot 2024.02 with GCC 12.3.0, glibc 2.38,
 Linux 5.10.x headers, and the first-pass UMRK runtime library surface:
 SDL2, SDL2_image, SDL2_ttf, freetype, harfbuzz, libpng, jpeg, zlib, sqlite,
-libcurl with OpenSSL, CA certificates, alsa-lib, libdrm, and standard EGL/GLES
-interfaces.
+json-c, libcurl with OpenSSL, CA certificates, alsa-lib, libdrm, and standard
+EGL/GLES interfaces.
 
 It does not copy or redistribute stock Miniloong firmware libraries, Mali
 drivers, or other device blobs.
