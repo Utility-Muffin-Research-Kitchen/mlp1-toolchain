@@ -57,6 +57,7 @@ ENV UNION_PLATFORM=mlp1
 ENV PREFIX_LOCAL=/opt/umrk
 
 COPY toolchain-aarch64.cmake ${TOOLCHAIN_DIR}/Toolchain.cmake
+COPY flags/mlp1-build-flags.env flags/mlp1-build-flags.mk ${TOOLCHAIN_DIR}/umrk/
 
 RUN mkdir -p "${PREFIX_LOCAL}/include" "${PREFIX_LOCAL}/lib"
 

@@ -15,7 +15,7 @@ SDK_BUILD_IMAGE ?= ubuntu:24.04
 SDK_DOCKER_WORKDIR ?= volume
 SDK_DOCKER_VOLUME ?= $(TOOLCHAIN_NAME)-sdk-$(SDK_ARCH)
 
-.PHONY: sdk sdk-config image shell smoke smoke-adb clean clean-sdk-volume help
+.PHONY: sdk sdk-config image shell print-flags smoke smoke-adb clean clean-sdk-volume help
 
 sdk:
 	BUILDROOT_VERSION=$(BUILDROOT_VERSION) \
@@ -53,6 +53,9 @@ shell: image
 		$(LOCAL_IMAGE) \
 		/bin/bash
 
+print-flags:
+	@scripts/print-build-flags.sh
+
 smoke: image
 	docker run --rm \
 		-v "$(CURDIR)":/workspace \
@@ -76,6 +79,8 @@ help:
 	@echo "  make sdk-config Validate the Buildroot SDK defconfig only"
 	@echo "  make image      Build local Docker image $(LOCAL_IMAGE)"
 	@echo "  make shell      Open a shell in the local toolchain image"
+	@echo "  make print-flags"
+	@echo "                  Print the shared MLP1 product-build flags"
 	@echo "  make smoke      Build the target SDL smoke binary"
 	@echo "  make smoke-adb  Build, validate, push, and run smoke binary over ADB"
 	@echo "  make clean      Remove generated outputs"
