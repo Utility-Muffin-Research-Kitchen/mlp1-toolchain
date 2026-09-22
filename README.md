@@ -45,24 +45,42 @@ PKG_CONFIG_SYSROOT_DIR=/opt/mlp1-toolchain/aarch64-buildroot-linux-gnu/sysroot
 UNION_PLATFORM=mlp1
 ```
 
-Published image:
+For a contributor build, pull the published image and resolve its local image
+ID. Pass that ID to Leaf so every build uses the same image even if a tag moves:
 
 ```sh
 docker pull ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain:latest
+toolchain_image="$(docker image inspect --format '{{.Id}}' \
+  ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain:latest)"
+TOOLCHAIN_IMAGE="$toolchain_image" make -C ../Leaf release-zips DEVICE=mlp1 REBUILD_CORES=1
 ```
 
-Local UMRK workspace builds and Leaf staging use:
+The first dev build can compile missing or stale cores with `REBUILD_CORES=1`.
+Later builds can omit it when the selected image has a complete cache. For a
+beta or stable build, check the cache without compiling:
+
+```sh
+TOOLCHAIN_IMAGE="$toolchain_image" ../Cores-spruce/build-mlp1.sh --check-stock-parity-cache
+```
+
+Proceed only when it reports 31 reused and 0 misses. Leaf repeats this check
+before building, requires the full image ID for beta and stable, and assembles
+their core report in cache-only mode. The Flycast fast core keeps its separate
+pinned toolchain image; changing the generic image ID invalidates the other 30
+core cache entries. Select a locally available matching image ID rather than
+retagging `:local` during release preparation.
+
+The `:local` tag remains useful for dev builds and staging:
 
 ```text
 ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain:local
 ```
 
-Build it before MLP1 product builds, staging, or release ZIP generation:
+Maintainers can build the SDK and a local image from source with `make image`.
+Use `make sdk` when you only need the SDK tarball:
 
 ```sh
 make image
-# or from Leaf:
-make -C ../mlp1-toolchain image
 ```
 
 ## Local Commands
